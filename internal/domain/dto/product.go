@@ -12,10 +12,10 @@ type RequestCreateProduct struct {
 
 type RequestUpdateProduct struct {
 	ID          uuid.UUID `json:"-"`
-	Title       string    `json:"title" validate:"min=3,max=50"`
+	Title       string    `json:"title" validate:"omitempty,min=3,max=50"`
 	Description string    `json:"description"`
-	Price       int64     `json:"price" validate:"min=1"`
-	Stock       int8      `json:"stock" validate:"min=1"`
+	Price       int64     `json:"price" validate:"omitempty,min=1"`
+	Stock       int8      `json:"stock" validate:"omitempty,min=1"`
 	PhotoUrl    string    `json:"photo_url"`
 }
 
