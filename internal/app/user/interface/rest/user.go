@@ -20,6 +20,7 @@ func NewUserHandler(routerGroup fiber.Router, userUseCase usecase.UserUsecaseItf
 	routerGroup = routerGroup.Group("/users")
 
 	routerGroup.Post("/register", UserHandler.Register)
+    routerGroup.Post("/login", UserHandler.Login)
 }
 
 func (h *UserHandler) Register(ctx *fiber.Ctx) error {
