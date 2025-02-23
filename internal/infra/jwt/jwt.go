@@ -9,6 +9,7 @@ import (
 
 type JWTI interface{
 	GenerateToken(userId uuid.UUID) (string, error)
+	ValidateToken(tokenString string) (uuid.UUID, error)
 }
 
 type JWT struct{}
@@ -57,6 +58,6 @@ func (j *JWT) ValidateToken(tokenString string) (uuid.UUID, error) {
 	}
 
 	id = claim.UserId
-	
+
 	return id, nil
 }
