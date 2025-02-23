@@ -17,10 +17,10 @@ type UserUsecaseItf interface {
 
 type UserUsecase struct {
 	userRepo repository.UserMySQLItf
-	jwt      jwt.JWTI
+	jwt      jwt.JWT
 }
 
-func NewUserUsecase(userRepo repository.UserMySQLItf, jwt jwt.JWTI) UserUsecaseItf {
+func NewUserUsecase(userRepo repository.UserMySQLItf, jwt jwt.JWT) UserUsecaseItf {
 	return &UserUsecase{
 		userRepo: userRepo,
 	}

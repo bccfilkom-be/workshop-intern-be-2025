@@ -12,10 +12,20 @@ type JWTI interface{
 	ValidateToken(tokenString string) (uuid.UUID, error)
 }
 
-type JWT struct{}
+type JWT struct{
+	SecretKey string
+	ExpiredTime time.Time
+}
 
-func NewJWT() JWTI {
-	return &JWT{}
+
+func NewJWT() *JWT {
+	secretKey := "SECRET"
+	expiredTime := time.Now().Add(time.Hour * 2)
+
+	return &JWT{
+		SecretKey: secretKey,
+		ExpiredTime: expiredTime,
+	}
 }
 
 type Claims struct {
