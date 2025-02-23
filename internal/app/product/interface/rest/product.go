@@ -31,7 +31,7 @@ func NewProductHandler(routerGroup fiber.Router, _validator *validator.Validate,
 
 func (h *ProductHandler) CreateProduct(ctx *fiber.Ctx) error {
 	var request dto.RequestCreateProduct
-	if err := ctx.BodyParser(request); err != nil {
+	if err := ctx.BodyParser(&request); err != nil {
 		return err
 	}
 
@@ -83,8 +83,7 @@ func (h *ProductHandler) GetSpecificProduct(ctx *fiber.Ctx) error {
 func (h *ProductHandler) UpdateProduct(ctx *fiber.Ctx) error {
 	var request dto.RequestUpdateProduct
 
-	err := ctx.BodyParser(request)
-	if err != nil {
+	if err := ctx.BodyParser(&request); err != nil {
 		return err
 	}
 
