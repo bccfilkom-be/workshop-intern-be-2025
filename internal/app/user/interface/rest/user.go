@@ -37,3 +37,21 @@ func (h *UserHandler) Register(ctx *fiber.Ctx) error {
 		"message": "success register user",
 	})
 }
+
+func (h *UserHandler) Login(ctx *fiber.Ctx) error {
+	var login dto.Login
+
+	if err := ctx.BodyParser(&login); err != nil {
+		return err
+	}
+
+	token, err := h.usecase.Login(login)
+	if err != nil {
+		return err
+	}
+
+	return ctx.Status(http.StatusOK).JSON(fiber.Map{
+		"message": "success login user",
+		"token":   token,
+	})
+}
