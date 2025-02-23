@@ -8,7 +8,7 @@ import (
 )
 
 type JWTI interface{
-	GenerateToken(userId uuid.UUID) (string, error)
+	GenerateToken(userId uuid.UUID, isAdmin bool) (string, error)
 	ValidateToken(tokenString string) (uuid.UUID, error)
 }
 
@@ -20,12 +20,14 @@ func NewJWT() JWTI {
 
 type Claims struct {
 	UserId uuid.UUID
+	IsAdmin bool
 	jwt.RegisteredClaims
 }
 
-func (j *JWT) GenerateToken(userId uuid.UUID) (string, error) {
+func (j *JWT) GenerateToken(userId uuid.UUID, isAdmin bool) (string, error) {
 	claim := Claims{
 		UserId: userId,
+		IsAdmin: isAdmin,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 2)),
 		},

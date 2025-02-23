@@ -56,7 +56,7 @@ func (u *UserUsecase) Login(login dto.Login) (string, error) {
 		return "", errors.New("invalid password")
 	}
 
-    token, err := u.jwt.GenerateToken(user.ID)
+    token, err := u.jwt.GenerateToken(user.ID, user.IsAdmin)
     if err != nil {
         return "", err
     }
