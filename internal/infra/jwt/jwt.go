@@ -52,7 +52,6 @@ func (j *JWT) GenerateToken(userId uuid.UUID, isAdmin bool) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 
-	fmt.Println("SIGNED TOKEN", j.SecretKey)
 
 	tokenString, err := token.SignedString([]byte(j.SecretKey))
 	if err != nil {

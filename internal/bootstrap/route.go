@@ -23,6 +23,6 @@ func MountRoutes(config *Config) {
 	_productRest.NewProductHandler(routerGroup, config.Va, productUseCase, middleware)
 
 	userRepository := _userRepo.NewUserMySQL(config.My)
-	userUseCase := _userUsecase.NewUserUsecase(userRepository, *jwt)
+	userUseCase := _userUsecase.NewUserUsecase(userRepository, jwt)
 	_userRest.NewUserHandler(routerGroup, userUseCase)
 }
