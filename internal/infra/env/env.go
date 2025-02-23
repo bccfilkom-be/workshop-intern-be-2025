@@ -14,6 +14,9 @@ type Env struct {
 	DatabaseUsername string `env:"DB_USERNAME,required"`
 	DatabasePassword string `env:"DB_PASSWORD,required"`
 	DatabaseName     string `env:"DB_NAME,required"`
+
+	JwtSecret string `env:"JWT_SECRET,required"`
+	JwtExpired int `env:"JWT_EXPIRED,required"`
 }
 
 func New() (*Env, error) {

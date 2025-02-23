@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ahmdyaasiin/workshop-intern-be-2025/internal/infra/env"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 )
@@ -20,8 +21,13 @@ type JWT struct{
 
 
 func NewJWT() *JWT {
-	secretKey := "SECRET"
-	expiredTime := time.Now().Add(time.Hour * 2)
+	_env, err := env.New()
+	if err != nil {
+		panic(err)
+	}
+
+	secretKey := _env.JwtSecret
+	expiredTime := time.Now().Add(time.Hour * time.Duration(_env.JwtExpired))
 
 	return &JWT{
 		SecretKey: secretKey,
@@ -46,7 +52,9 @@ func (j *JWT) GenerateToken(userId uuid.UUID, isAdmin bool) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 
-	tokenString, err := token.SignedString([]byte("secret"))
+	fmt.Println("SIGNED TOKEN", j.SecretKey)
+
+	tokenString, err := token.SignedString([]byte(j.SecretKey))
 	if err != nil {
 		return "", err
 	}
@@ -59,8 +67,10 @@ func (j *JWT) ValidateToken(tokenString string) (uuid.UUID, bool, error) {
 	var claim Claims
 	var id uuid.UUID
 
+	fmt.Println("SECRET", j.SecretKey)
+
 	token, err := jwt.ParseWithClaims(tokenString, &claim, func(token *jwt.Token) (interface{}, error) {
-		return []byte("secret"), nil
+		return []byte(j.SecretKey), nil
 	})
 
 	if err != nil {

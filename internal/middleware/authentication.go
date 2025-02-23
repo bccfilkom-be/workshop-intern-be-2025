@@ -38,6 +38,7 @@ func (m *Middleware) Authentication(ctx *fiber.Ctx) error {
 	if err != nil {
 		ctx.Status(401).JSON(fiber.Map{
 			"message": "Unauthorized",
+			"error" : err.Error(),
 		})
 		return nil
 	}
