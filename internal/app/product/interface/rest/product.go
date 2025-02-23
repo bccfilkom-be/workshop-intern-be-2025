@@ -14,13 +14,14 @@ import (
 type ProductHandler struct {
 	Validator      *validator.Validate
 	ProductUseCase usecase.ProductUsecaseItf
-	middleware     *middleware.Middleware
+	middleware     middleware.MiddlewareI
 }
 
-func NewProductHandler(routerGroup fiber.Router, _validator *validator.Validate, productUseCase usecase.ProductUsecaseItf, middleware *middleware.Middleware) {
+func NewProductHandler(routerGroup fiber.Router, _validator *validator.Validate, productUseCase usecase.ProductUsecaseItf, middleware middleware.MiddlewareI) {
 	productHandler := ProductHandler{
 		Validator:      _validator,
 		ProductUseCase: productUseCase,
+		middleware: middleware,
 	}
 
 	routerGroup = routerGroup.Group("/products")

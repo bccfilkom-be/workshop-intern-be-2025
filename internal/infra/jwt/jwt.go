@@ -1,6 +1,7 @@
 package jwt
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -9,7 +10,7 @@ import (
 
 type JWTI interface{
 	GenerateToken(userId uuid.UUID, isAdmin bool) (string, error)
-	ValidateToken(tokenString string) (uuid.UUID, error)
+	ValidateToken(tokenString string) (uuid.UUID, bool, error)
 }
 
 type JWT struct{
@@ -53,23 +54,24 @@ func (j *JWT) GenerateToken(userId uuid.UUID, isAdmin bool) (string, error) {
 	return tokenString, nil
 }
 
-func (j *JWT) ValidateToken(tokenString string) (uuid.UUID, error) {
+func (j *JWT) ValidateToken(tokenString string) (uuid.UUID, bool, error) {
+	fmt.Println("RUN THIS LINE")
 	var claim Claims
 	var id uuid.UUID
 
-	token, err := jwt.ParseWithClaims(tokenString, claim, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &claim, func(token *jwt.Token) (interface{}, error) {
 		return []byte("secret"), nil
 	})
 
 	if err != nil {
-		return id, err
+		return id, false, err
 	}
 
 	if !token.Valid {
-		return id, err
+		return id, false, err
 	}
 
 	id = claim.UserId
 
-	return id, nil
+	return id, claim.IsAdmin, nil
 }

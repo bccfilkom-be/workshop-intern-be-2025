@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -15,6 +16,12 @@ func (m *Middleware) Authentication(ctx *fiber.Ctx) error {
 		})
 	}
 
+	if len(authHeader) < 1 {
+		ctx.Status(401).JSON(fiber.Map{
+			"message": "Unauthorized",
+		})
+		return nil
+	}
 	bearerToken := authHeader[0]
 
 	if bearerToken == "" {
@@ -25,8 +32,9 @@ func (m *Middleware) Authentication(ctx *fiber.Ctx) error {
 	}
 
 	token := strings.Split(bearerToken, " ")[1]
+	fmt.Println(token)
 
-	id, err := m.jwt.ValidateToken(token)
+	id, isAdmin, err := m.jwt.ValidateToken(token)
 	if err != nil {
 		ctx.Status(401).JSON(fiber.Map{
 			"message": "Unauthorized",
@@ -35,5 +43,6 @@ func (m *Middleware) Authentication(ctx *fiber.Ctx) error {
 	}
 
 	ctx.Locals("userId", id)
+	ctx.Locals("isAdmin", isAdmin)
 	return ctx.Next()
 }
