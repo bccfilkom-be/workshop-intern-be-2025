@@ -13,8 +13,8 @@ type Product struct {
 	Price       int64     `gorm:"type:bigint;not null"`
 	Stock       int8      `gorm:"type:smallint;not null"`
 	PhotoUrl    string    `gorm:"type:text"`
-	CreatedAt   time.Time `gorm:"type:timestamp;autoCreateTime"`
-	UpdatedAt   time.Time `gorm:"type:timestamp;autoUpdateTime"`
+	CreatedAt   time.Time `gorm:"type:datetime;autoCreateTime"`
+	UpdatedAt   time.Time `gorm:"type:datetime;autoUpdateTime"`
 }
 
 func (p *Product) ParseToDTO() dto.ResponseGetProduct {
